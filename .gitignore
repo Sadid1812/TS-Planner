@@ -1,0 +1,12 @@
+node_modules/
+dist/
+release/
+desktop-stage/
+.env
+.env.local
+.env.*
+!.env.example
+*.pem
+*.key
+*.gguf
+*.log

@@ -1,0 +1,7 @@
+import {assertRevision} from './persistence.js';
+const DB='ts-planner-v1';
+let dbPromise;
+function db(){if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>r.result.createObjectStore('documents');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});return dbPromise;}
+export async function load(key='local'){const d=await db();return new Promise((resolve,reject)=>{const r=d.transaction('documents').objectStore('documents').get(key);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+export async function save(value,key='local'){const d=await db();return new Promise((resolve,reject)=>{const tx=d.transaction('documents','readwrite');const store=tx.objectStore('documents');const req=store.get(key);req.onsuccess=()=>{try{assertRevision(req.result,value.revision);}catch(error){tx.abort();reject(error);return;}store.put({...value,revision:value.revision+1,updatedAt:new Date().toISOString()},key);};tx.oncomplete=()=>resolve({...value,revision:value.revision+1,updatedAt:new Date().toISOString()});tx.onerror=tx.onabort=()=>reject(tx.error||new Error('Your changes could not be saved. Export a recovery copy before reloading.'));});}
+export async function erase(key='local'){const d=await db();return new Promise((resolve,reject)=>{const tx=d.transaction('documents','readwrite');tx.objectStore('documents').delete(key);tx.oncomplete=resolve;tx.onerror=tx.onabort=()=>reject(tx.error||new Error('Your changes could not be saved. Export a recovery copy before reloading.'));});}
