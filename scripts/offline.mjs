@@ -8,9 +8,12 @@ const paths=files.map(f=>'./'+path.relative(root,f).replaceAll('\\','/'));
 const hash=crypto.createHash('sha256');for(const f of files)hash.update(await fs.readFile(f));
 await fs.writeFile(path.join(root,'sw.js'),`const CACHE='ts-planner-${hash.digest('hex').slice(0,12)}';
 const FILES=${JSON.stringify(paths)};
+const STATIC=new Set(FILES.map(p=>new URL(p,self.registration.scope).href));
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES))));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith('ts-planner-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(e.request.method!=='GET'||u.origin!==location.origin)return;
 if(e.request.mode==='navigate'){e.respondWith(fetch(e.request).catch(()=>caches.match(new URL('./index.html',self.registration.scope))));return;}
-e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});`);
+// Bundled assets have fixed content. Match their original URL rather than request
+// headers: Vary: Origin from the preview server otherwise misses module requests.
+if(STATIC.has(u.href))e.respondWith(caches.open(CACHE).then(c=>c.match(u.href)).then(r=>r||fetch(e.request)));});`);
 console.log('Offline cache prepared for '+files.length+' files');

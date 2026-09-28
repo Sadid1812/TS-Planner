@@ -28,6 +28,6 @@ Source: https://supabase.com/docs/guides/auth/redirect-urls
 
 ## 4. Deployment and verification
 
-The manual Pages workflow expects two public repository Actions variables: `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. Use the supplied project URL and publishable key. It now checks Google configuration, table existence and anonymous access denial before publishing. These checks do not replace real two-account tests.
+The public repository Actions variables `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` were saved and verified on September 28. Pages uses GitHub Actions and the configured site was deployed successfully. The workflow checks Google configuration, table existence and anonymous access denial before publishing. These checks do not replace real two-account tests.
 
 After configuration, run the supplied database access checks in the test project and test Gmail sign-in, age confirmation, private plans, Family sharing, conflicting edits and Windows callbacks. Google Calendar also needs Calendar API enabled and consent for the read-only calendar scope; this is separate from basic sign-in.

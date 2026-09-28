@@ -21,13 +21,21 @@ The owner requested one finished project, not further interim release deliveries
 - Spanish dynamic task actions, icon names, schedule conflicts and common error messages translated. Placeholder tests ensure task text is preserved. Production build, 57 automated tests and static Spanish catalog check pass.
 - GitHub source and cross-platform CI were previously published successfully. Deployment variables and Pages publication still need verification.
 
+## September 28 deployment and browser acceptance
+
+- Both public Supabase repository variables saved and verified. GitHub Pages now uses GitHub Actions.
+- Commit d7160d7 published successfully in Actions run 36440632095; the deployed URL returned HTTP 200 with the matching built asset.
+- Browser tests found and fixed offline module/style cache misses caused by request-header variation, initial task-dialog focus, and untranslated mobile navigation.
+- Three isolated browser tests pass: empty first run, saved tasks/notes across reload and offline edits, cross-window propagation, 390-pixel phone layout, keyboard dismissal, Spanish controls and icon search. Added browser checks to CI and the publication workflow.
+- Live Gmail sign-in has been requested from the owner; no successful signed-in session has been verified yet.
+
 ## Acceptance still pending
 
 - Real Gmail sign-in/cancel/sign-out in browser and Windows; age gate and non-Gmail rejection.
 - Live two-account Family invitation, privacy, sharing and leaving; live two-device sync including conflicts and offline recovery.
 - Real Google Calendar consent, refresh, expiry and disconnect.
 - Actual closed-app reminder delivery and a launch recheck after final packaging.
-- Final phone/keyboard usability pass and remaining server-generated error messages.
-- Deploy the configured web app, verify the deployed origin and offline behavior, then create the final deliverables together.
+- Remaining server-generated error messages and broader device usability checks.
+- Publish the browser-tested fixes, rerun acceptance against the deployed origin, then create final deliverables after the account and reminder checks pass.
 
 Do not put secrets in chat or frontend environment variables. No paid plan is authorized. Native mobile apps and payments remain future scope per the original product decisions.

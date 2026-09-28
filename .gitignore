@@ -10,3 +10,5 @@ desktop-stage/
 *.key
 *.gguf
 *.log
+test-results/
+playwright-report/

@@ -102,6 +102,7 @@ export function Dialog({
   const ref = useRef();
   useEffect(() => {
     ref.current.showModal();
+    ref.current.querySelector('[data-dialog-autofocus]')?.focus();
   }, []);
   return <dialog className={'dialog ' + (wide ? 'wide' : '')} ref={ref} onCancel={onClose}><div className="dialog-heading"><h2>{title}</h2><button className="icon-btn" aria-label={tx("Close dialog")} onClick={onClose}><Icon name="X" /></button></div>{children}</dialog>;
 }
@@ -486,7 +487,7 @@ export function App() {
  <footer className="mobile-nav">{[...nav, ['settings', 'Settings', 'Settings']].map(([id, icon, name]) => <button key={id} className={route === id ? 'active' : ''} onClick={() => {
           R(id);
           Q('');
-        }}><Icon name={icon} /><span>{name}</span></button>)}</footer></main>
+        }}><Icon name={icon} /><span>{tx(name)}</span></button>)}</footer></main>
  {toast && <div className="toast" role="status"><Icon name="Check" size={18} /><span>{tx(toast.text)}</span>{toast.undo && <button onClick={undo}>{tx("Undo")}</button>}<button aria-label={tx("Dismiss message")} onClick={() => T(null)}><Icon name="X" size={16} /></button></div>}
  {modal === 'task' && <TaskEditor item={editing} date={date} state={withCalendar(s, events)} close={() => Modal(null)} save={(data, scope) => {
       if (editing?.id) update(x => editTask(x, editing.id, editing.date, data, scope), true);else update(x => ({
@@ -591,7 +592,7 @@ function TaskEditor({
       title: d.title.trim()
     }, scope);
   }
-  return <Dialog title={item?.id ? tx("Edit your task") : tx("Make a little plan")} onClose={close}><form onSubmit={submit}><label className="field">{tx("What would you like to do?")}<input autoFocus required maxLength={180} placeholder={tx("Something that matters to you")} value={d.title} onChange={e => set('title', e.target.value)} /></label>{d.warning && <p className="setup-note">{tx(d.warning)}</p>}<label className="field">{tx("Subtitle ")}<span>{tx("optional")}</span><textarea rows={2} maxLength={2000} placeholder={tx("A note, a next step, a little context…")} value={d.description || ''} onChange={e => set('description', e.target.value)} /></label><TaskDetails task={d} set={set} state={state} /><div className="form-grid"><label className="field">{tx("Day")}<input type="date" required value={d.date} disabled={!!(item?.id && item?.repeat && item.repeat !== 'none')} onChange={e => set('date', e.target.value)} /></label><label className="field">{tx("Repeat")}<select value={d.repeat} onChange={e => {
+  return <Dialog title={item?.id ? tx("Edit your task") : tx("Make a little plan")} onClose={close}><form onSubmit={submit}><label className="field">{tx("What would you like to do?")}<input data-dialog-autofocus required maxLength={180} placeholder={tx("Something that matters to you")} value={d.title} onChange={e => set('title', e.target.value)} /></label>{d.warning && <p className="setup-note">{tx(d.warning)}</p>}<label className="field">{tx("Subtitle ")}<span>{tx("optional")}</span><textarea rows={2} maxLength={2000} placeholder={tx("A note, a next step, a little context…")} value={d.description || ''} onChange={e => set('description', e.target.value)} /></label><TaskDetails task={d} set={set} state={state} /><div className="form-grid"><label className="field">{tx("Day")}<input type="date" required value={d.date} disabled={!!(item?.id && item?.repeat && item.repeat !== 'none')} onChange={e => set('date', e.target.value)} /></label><label className="field">{tx("Repeat")}<select value={d.repeat} onChange={e => {
             set('repeat', e.target.value);
             if (e.target.value === 'custom' && !d.rule) set('rule', {
               unit: 'week',
