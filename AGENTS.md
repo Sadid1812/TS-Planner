@@ -2,6 +2,8 @@
 
 ## Approved product decisions
 
+New planners must start empty. Do not seed sample tasks, completed work or progress into a user's plan. Preserve existing saved tasks and notes when upgrading.
+
 The user approved the charcoal-and-amber combined visual: sidebar, outline notification bell, priorities on the left, schedule on the right, and the full-width Daily note. Preserve that structure. Provide Evening, Coffee, Botanical, Retro, Ocean, Sky, and Neon Punk themes with thoughtful bundled font pairings and independent font controls. Keep task text readable in every theme. This release is for ages 13+; only verified Gmail accounts may use the eventual cloud service. Be explicit that the unconfigured build stores data locally. Never substitute fake accounts or family progress for real integration.
 
 Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.

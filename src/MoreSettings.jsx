@@ -73,7 +73,7 @@ export function MoreSettings({
           } catch {
             Error('Local AI is unavailable. Start the selected engine and allow this planner’s exact origin. Hosted browsers may block local access.');
           }
-        }}>{tx("Check local connection")}</button>{error && <p role="alert">{error}</p>}<p className="setup-note">{tx("Only explicit requests send task text to a local endpoint. Enabling this option does not download a model or send your whole planner.")}</p></>}</section><CalendarConnection {...{
+        }}>{tx("Check local connection")}</button>{error && <p role="alert">{tx(error)}</p>}<p className="setup-note">{tx("Only explicit requests send task text to a local endpoint. Enabling this option does not download a model or send your whole planner.")}</p></>}</section><CalendarConnection {...{
       session,
       events,
       setEvents,

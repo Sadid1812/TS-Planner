@@ -105,7 +105,7 @@ export function SyncPanel({
     }
   }
   return <div><p>{tx("Signed in with your Gmail account.")}</p><p className="setup-note">{state.sync?.at ? 'Last synced ' + new Date(state.sync.at).toLocaleString() : tx("This account has not synced on this device yet.")}</p>
- {error && <p className="form-error" role="alert">{error}</p>}
+ {error && <p className="form-error" role="alert">{tx(error)}</p>}
  {conflict ? <><h3>{tx("Choose the plan to keep.")}</h3><p>{tx("Both copies are preserved until you choose. Replacing a copy downloads a backup first.")}</p><div className="button-row"><button className="primary" disabled={busy || !conflict.document} onClick={() => run('pull')}>{tx("Use cloud plan")}</button><button className="secondary" disabled={busy} onClick={() => run('push')}>{tx("Use this device’s plan")}</button><button className="text-btn" disabled={busy} onClick={() => Conflict(null)}>{tx("Decide later")}</button></div></> : <button className="primary" disabled={busy} onClick={() => run()}><Icon name="RefreshCw" />{busy ? tx("Syncing…") : tx("Sync planner")}</button>}
  <p className="setup-note">{tx("Sync when you finish planning and before switching devices. Offline edits stay on this device until your next successful sync.")}</p>
  <div className="button-row"><button className="secondary" disabled={busy} onClick={async () => {

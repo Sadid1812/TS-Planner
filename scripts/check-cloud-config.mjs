@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {checkCloudReadiness} from './cloud-readiness.mjs';
 // Validate without ever echoing a key. Public Vite values are shipped to browsers.
 const values={...process.env};
 for(const file of ['.env','.env.local','.env.production','.env.production.local'])if(fs.existsSync(file)){
@@ -17,3 +18,4 @@ if(!key.startsWith('sb_publishable_')){
  if(claims?.role!=='anon')throw new Error('Only a public publishable or anon key may be bundled. Never use a secret or service-role key.');
 }
 console.log('Public cloud configuration validated.');
+if(process.env.TS_REQUIRE_CLOUD==='1') console.log(await checkCloudReadiness(parsed.origin,key));

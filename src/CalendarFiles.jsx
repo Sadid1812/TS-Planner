@@ -87,5 +87,5 @@ export function CalendarFiles({
       } catch (e) {
         ErrorMessage(e.message);
       }
-    }}>{tx("Download calendar file")}</button>{error && <p role="alert">{error}</p>}</section>;
+    }}>{tx("Download calendar file")}</button>{error && <p role="alert">{tx(error)}</p>}</section>;
 }

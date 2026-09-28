@@ -113,7 +113,7 @@ export function WeekPlanner({
               })}</button>{events.filter(e => e.date === d && !e.start).map(e => <p className="external-event" key={e.id}>{e.start || tx("All day")} · {e.title}</p>)}<div className="week-unscheduled">{items.filter(t => !t.start && t.status === 'open').map(t => <div key={t.key} draggable onDragStart={e => e.dataTransfer.setData('text/plain', JSON.stringify({
                 id: t.id,
                 date: t.date
-              }))}><button onClick={() => openTask(t)}>{t.title}</button><button aria-label={'Move ' + t.title} onClick={() => propose(t, d, '09:00')}>{tx("Move")}</button></div>)}</div><div className="week-hours">{external.map(e => <div className="week-block external-week" key={e.id} style={{
+              }))}><button onClick={() => openTask(t)}>{t.title}</button><button aria-label={tx('Move {title}', {title: t.title})} onClick={() => propose(t, d, '09:00')}>{tx("Move")}</button></div>)}</div><div className="week-hours">{external.map(e => <div className="week-block external-week" key={e.id} style={{
                 top: minutes(e.start) * .7,
                 height: Math.max(28, (minutes(e.end) - minutes(e.start)) * .7),
                 left: (lanes[e.id]?.lane || 0) * 100 / (lanes[e.id]?.columns || 1) + '%',
@@ -140,9 +140,9 @@ export function WeekPlanner({
                 height: Math.max(28, Math.min(1440 - minutes(t.start), minutes(t.end) - minutes(t.start) + (t.overnight ? 1440 : 0)) * .7),
                 left: (lanes[t.key]?.lane || 0) * 100 / (lanes[t.key]?.columns || 1) + '%',
                 width: 100 / (lanes[t.key]?.columns || 1) + '%'
-              }}><button onClick={() => openTask(t)}>{t.start} {t.title}{t.overnight ? tx(" → next day") : ''}</button><button disabled={t.status !== 'open'} aria-label={'Move ' + t.title} title={t.status !== 'open' ? tx("Reopen this task before moving it") : undefined} onClick={() => propose(t, d, t.start)}>{tx("Move")}</button></div>)}</div></section>;
+              }}><button onClick={() => openTask(t)}>{t.start} {t.title}{t.overnight ? tx(" → next day") : ''}</button><button disabled={t.status !== 'open'} aria-label={tx('Move {title}', {title: t.title})} title={t.status !== 'open' ? tx("Reopen this task before moving it") : undefined} onClick={() => propose(t, d, t.start)}>{tx("Move")}</button></div>)}</div></section>;
         })}</div></div>
- {moving && <Dialog title={'Move ' + moving.title} onClose={() => Moving(null)}><p>{moving.repeat !== 'none' ? tx("Only this occurrence will move; the repeating rule stays the same.") : tx("Choose its new day and time.")}</p><label className="field">{tx("Date")}<input type="date" value={target.date} onChange={e => {
+ {moving && <Dialog title={tx('Move {title}', {title: moving.title})} onClose={() => Moving(null)}><p>{moving.repeat !== 'none' ? tx("Only this occurrence will move; the repeating rule stays the same.") : tx("Choose its new day and time.")}</p><label className="field">{tx("Date")}<input type="date" value={target.date} onChange={e => {
           Target({
             ...target,
             date: e.target.value
@@ -154,7 +154,7 @@ export function WeekPlanner({
             start: e.target.value
           });
           Warning('');
-        }} /></label>{warning && <p role="alert">{warning}</p>}<button className="primary" disabled={!target.date || !target.start} onClick={() => apply(warning.startsWith('Overlaps with'))}>{warning.startsWith('Overlaps with') ? tx("Keep overlap and move") : tx("Move occurrence")}</button></Dialog>}
+        }} /></label>{warning && <p role="alert">{warning.startsWith('Overlaps with ') ? tx('Overlaps with {titles}', {titles: warning.slice('Overlaps with '.length)}) : tx(warning)}</p>}<button className="primary" disabled={!target.date || !target.start} onClick={() => apply(warning.startsWith('Overlaps with'))}>{warning.startsWith('Overlaps with') ? tx("Keep overlap and move") : tx("Move occurrence")}</button></Dialog>}
  {proposals && <Dialog title={tx("Suggested time slots")} onClose={() => Proposals(null)}><p>{tx("These use your work hours, task duration, and breaks. Nothing moves until you accept it. These are rule-based suggestions.")}</p>{!proposals.length && <p>{tx("No unscheduled tasks fit the available time. Adjust your work hours in Settings.")}</p>}{proposals.map(t => <div className="setting-row" key={t.key}><span>{t.title}<small> {t.start}–{t.end}</small></span><button className="secondary" onClick={() => {
           const current = tasksFor(state, t.date).find(x => x.id === t.id);
           if (current?.start || conflicts(withCalendar(state, events), t).length) {
@@ -182,10 +182,10 @@ export function Inbox({
     ...x,
     [t.date]: [...(x[t.date] || []), t]
   }), {});
-  return <Dialog title={'Unfinished work · ' + items.length} onClose={close} wide><p>{tx("Decide what comes next. Dismissing an item keeps its original history.")}</p>{!items.length && <p>{tx("You’re all caught up.")}</p>}{Object.entries(groups).sort(([a], [b]) => b.localeCompare(a)).map(([d, ts]) => <section key={d}><div className="section-title"><h3>{d} · {ts.length}{tx(" tasks")}</h3><button className="text-btn" onClick={() => update(s => ({
+  return <Dialog title={tx('Unfinished work · {count}', {count: items.length})} onClose={close} wide><p>{tx("Decide what comes next. Dismissing an item keeps its original history.")}</p>{!items.length && <p>{tx("You’re all caught up.")}</p>}{Object.entries(groups).sort(([a], [b]) => b.localeCompare(a)).map(([d, ts]) => <section key={d}><div className="section-title"><h3>{d} · {ts.length}{tx(" tasks")}</h3><button className="text-btn" onClick={() => update(s => ({
           ...s,
           dismissed: [...new Set([...s.dismissed, ...ts.map(t => t.key)])]
-        }), true)}>{tx("Dismiss this day")}</button></div>{ts.map(t => <div className="inbox-item" key={t.key}><Icon name={t.icon} /><div><strong>{t.title}</strong><div className="button-row"><button className="tiny-btn" onClick={() => move(t, today)}>{tx("Move to today")}</button><input type="date" aria-label={'Reschedule ' + t.title} value={dates[t.key] || today} onChange={e => Dates({
+        }), true)}>{tx("Dismiss this day")}</button></div>{ts.map(t => <div className="inbox-item" key={t.key}><Icon name={t.icon} /><div><strong>{t.title}</strong><div className="button-row"><button className="tiny-btn" onClick={() => move(t, today)}>{tx("Move to today")}</button><input type="date" aria-label={tx('Reschedule {title}', {title: t.title})} value={dates[t.key] || today} onChange={e => Dates({
               ...dates,
               [t.key]: e.target.value
             })} /><button className="tiny-btn" onClick={() => move(t, dates[t.key] || today)}>{tx("Reschedule")}</button><button className="text-btn" onClick={() => update(s => ({

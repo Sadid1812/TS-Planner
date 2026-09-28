@@ -11,15 +11,23 @@ The owner requested one finished project, not further interim release deliveries
 - Calendar events outside the daytime timeline remain visible. All-day events appear above the week timeline.
 - 52 automated tests, Spanish catalog coverage, production build and Windows compilation pass. Browser checks on isolated localhost:4179 verified saving, opening the saved note in a second window and propagation back to the first.
 
+## September 27 setup and first-run corrections
+
+- Supabase Google provider configured and enabled; Email provider disabled. Public readiness checks pass.
+- Production Site URL and web, Windows and local-test callback allowlist saved and read back.
+- Google Cloud project and OAuth client created; owner account added as a test user. Google app remains in Testing.
+- New local planners start empty instead of loading five sample tasks and artificial 40% progress. Existing saved plans are preserved.
+- Normal Windows launch verified on September 27: the planner renders and preserves the existing local profile and history.
+- Spanish dynamic task actions, icon names, schedule conflicts and common error messages translated. Placeholder tests ensure task text is preserved. Production build, 57 automated tests and static Spanish catalog check pass.
+- GitHub source and cross-platform CI were previously published successfully. Deployment variables and Pages publication still need verification.
+
 ## Acceptance still pending
 
-- Owner Supabase project and Google OAuth provider configuration; public project URL and publishable/anon key.
-- Owner GitHub repository and deployment access. Two GitHub connector profile attempts returned authentication retry responses without a profile.
 - Real Gmail sign-in/cancel/sign-out in browser and Windows; age gate and non-Gmail rejection.
 - Live two-account Family invitation, privacy, sharing and leaving; live two-device sync including conflicts and offline recovery.
 - Real Google Calendar consent, refresh, expiry and disconnect.
-- Normal Windows launch of the completed build and actual closed-app reminder delivery.
-- Remaining dynamic Spanish labels/errors and final phone/keyboard usability pass.
+- Actual closed-app reminder delivery and a launch recheck after final packaging.
+- Final phone/keyboard usability pass and remaining server-generated error messages.
 - Deploy the configured web app, verify the deployed origin and offline behavior, then create the final deliverables together.
 
 Do not put secrets in chat or frontend environment variables. No paid plan is authorized. Native mobile apps and payments remain future scope per the original product decisions.

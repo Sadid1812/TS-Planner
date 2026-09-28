@@ -1,4 +1,4 @@
-TS PLANNER 0.3.0 - WINDOWS
+TS PLANNER - WINDOWS
 
 Extract the entire folder, then open TS Planner.exe.
 Keep its DLLs and web folder together. Quit older versions from the tray first.
@@ -19,8 +19,9 @@ from the encrypted per-user reminder snapshot.
 The worker and timing engine compile and pass local tests. Actual scheduled
 notification delivery still needs verification in normal Windows execution.
 
-Gmail login, Family, cloud sync and Google Calendar need provider configuration.
-This package stores plans locally because public backend values are absent.
+Plans save locally and remain available offline. Configured builds also offer
+Gmail login, Family and cloud sync. Google Calendar requires separate consent.
+Use the account menu to synchronize; local changes are not automatically uploaded.
 Browser and desktop storage are separate; backups can transfer your plan.
 
 Data and startup logs: %LOCALAPPDATA%\TS Planner\WebView2
